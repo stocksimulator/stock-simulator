@@ -22,6 +22,7 @@ app.use('/build', express.static(path.join(__dirname, '../build')));
 app.use(bodyParser.json())
 
 // serve entry point to app (index.html)
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../index.html'));
 });
@@ -55,4 +56,8 @@ app.use((err, req, res, next) => {
 console.log(process.env.API_KEY)
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`)
+})
+
+app.post('user/login', (req, res) => {
+  console.log("blah");
 })
