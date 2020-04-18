@@ -1,1 +1,1 @@
-# stocksimulator
+# stock-simulator
