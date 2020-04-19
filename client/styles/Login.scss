@@ -1,0 +1,36 @@
+@import './constants/colors';
+@import './constants/fonts';
+
+
+.login-container {
+  width: 25%;
+  min-width: 400px;
+  min-height: 400px;
+  border: 1px solid $darkBlue;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+  box-shadow: 1px 1px 2px grey;
+  // background: linear-gradient(to bottom, $darkBlue 50%, white 50%);
+  background-color: white;
+
+  form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0rem 1rem;
+  }
+
+  p {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  span {
+    margin-bottom: 2rem;
+  }
+}
