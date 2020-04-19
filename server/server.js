@@ -8,10 +8,10 @@ const bodyParser = require('body-parser');
 require('dotenv').config()
 
 const PORT = 3000;
-mongoose.connect(/* bring in database connection */);
-mongoose.connection.once('open', () => {
-  console.log('Connection to DB succesful');
-});
+// mongoose.connect(/* bring in database connection */);
+// mongoose.connection.once('open', () => {
+//   console.log('Connection to DB succesful');
+// });
 
 
 /* --------------------------- Serve Static Assets -------------------------- */
@@ -24,6 +24,11 @@ app.use(bodyParser.json())
 // serve entry point to app (index.html)
 
 app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../index.html'));
+});
+
+// for handling client side routing
+app.get('/app/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../index.html'));
 });
 

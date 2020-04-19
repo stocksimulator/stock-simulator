@@ -5,6 +5,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'bundle.js',
+    publicPath: '/'
   },
   mode: process.env.NODE_ENV,
   devServer: {
@@ -13,6 +14,7 @@ module.exports = {
       '/user': 'http://localhost:3000',
     },
     open: false,
+    historyApiFallback: true,
   },
   resolve: { extensions: ['.js', '.jsx'] },
   module: {
