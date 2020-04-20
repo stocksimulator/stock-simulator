@@ -47,6 +47,11 @@ app.post('/user/getdata', userController.getUserData, (req, res) => {
   res.status(200).json(res.locals.user);
 })
 
+// for handling client side routing
+app.get('/app/*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../index.html'));
+});
+
 /* --------------------------- Stock Info HTTP Requests -------------------------- */
 // get request for getting stock info from API
 app.get('/api/:symbol', apiController.getStockValue, (req, res) => {
