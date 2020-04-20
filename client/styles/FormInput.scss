@@ -1,0 +1,32 @@
+@import './constants/colors';
+@import './constants/fonts';
+
+.form-input-container {
+  margin-top: 1rem;
+  width: 100%;
+  display: flex;
+  // justify-content: center;
+  position: relative;
+  flex-direction: column;
+
+  label {
+    font-size: 0.75rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    scroll-margin-left: 0.5rem;
+  }
+
+  .form-input {
+    padding: .25rem .5rem;
+    margin-top: 1rem;
+    font-size: 1rem;
+    border: none;
+    border-bottom: 1px solid $primaryBlue;
+
+    &:focus {
+      outline: none;
+      border-bottom: 2px solid $primaryBlue;
+    }
+  }
+}
