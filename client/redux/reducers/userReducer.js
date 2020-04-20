@@ -4,7 +4,7 @@ const initialState = {
   _id: null,
   username: null,
   cash: 100000,
-  stocks: [{ stock: 'AACG', shares: 1, currentValue: 100 }],
+  stocks: [{ name: 'AACG', shares: 1, price: 100 }, { name: 'ACRX', shares: 4, price: 200 }],
 };
 
 const userReducer = (state = initialState, action) => {
