@@ -1,0 +1,10 @@
+@import './constants/colors';
+@import './constants/fonts';
+
+.landing-page {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 4rem;
+}

@@ -1,0 +1,32 @@
+@import './constants/colors';
+@import './constants/fonts';
+
+.header-container {
+  min-height: 40px;
+  padding: 1rem 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $lightBlue;
+  box-sizing: border-box;
+
+  .logo {
+    text-decoration: none;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  i {
+    margin-right: 1rem;
+    font-size: 2rem;
+  }
+
+  span {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5rem;
+  }
+}

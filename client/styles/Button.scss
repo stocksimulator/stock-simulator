@@ -1,0 +1,59 @@
+@import './constants/colors';
+@import './constants/fonts';
+
+.custom-button {
+  padding: 0.5rem 1rem;
+  min-width: 6rem;
+  border-radius: 3px;
+  box-shadow: 1px 1px 2px grey;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.primary {
+  background-color: $primaryBlue;
+  border: 1px solid $primaryBlue;
+  color: white;
+
+  &:hover {
+    background-color: $darkBlue;
+  }
+}
+
+.secondary {
+  border: 1px solid $primaryBlue;
+  color: $primaryBlue;
+
+  &:hover {
+    background-color: $primaryBlue;
+    color: white;
+  }
+}
+
+.def {
+  border: 1px solid $primaryGrey;
+  color: $primaryBlue;
+
+  &:hover {
+    background-color: $lightGrey;
+    border: 1px solid $darkGrey;
+  }
+}
+
+.ml1 {
+  margin-left: 1rem;
+}
+
+.mr1 {
+  margin-right: 1rem;
+}
+
+.mt1 {
+  margin-top: 1rem;
+}
+
+.mb1 {
+  margin-bottom: 1rem;
+}
