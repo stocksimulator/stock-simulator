@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
     username: {type: String, required: true, unique: true}, // added unique on April 20th
     password: {type: String, required: true},
     cash: {type: Number},
-    stockList: {type: Array}, 
+    stocks: {type: Array}, 
 })
 
 const User = mongoose.model('user', userSchema);

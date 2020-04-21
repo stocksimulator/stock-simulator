@@ -52,38 +52,38 @@ const DashboardContainer = () => {
   };
 
   const handleSearchClick = () => {
-    // fetch(`/api/${searchSymbol}`)
-    // .then(res => res.json())
-    // .then(data => setSearchPrice(data.price))
-    // .catch(err => console.log('ERROR while getting price: ', err))
-    setSearchPrice(120);
+    fetch(`/api/${searchSymbol}`)
+    .then(res => res.json())
+    .then(data => setSearchPrice(data.price))
+    .catch(err => console.log('ERROR while getting price: ', err))
   };
 
   const handleBuyClick = () => {
-    // fetch(`/api/buy`, {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({
-    //     _id: user._id,
-    //     symbol: searchSymbol,
-    //     shares: addShares,
-    //     total: addShares * searchPrice,
-    //   }),
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => dispatch(updateData(data)))
-    //   .catch((err) => console.log('ERROR while buying shares: ', err));
-    const sampleUserData = {
-      _id: null,
-      username: null,
-      cash: 90000,
-      stocks: [
-        { stock: 'AACG', shares: 1, currValue: 200 },
-        { stock: 'ACRZ', shares: 5, currValue: 200 },
-        { stock: 'ACRX', shares: 6, currValue: 500 },
-      ],
-    };
-    dispatch(updateData(sampleUserData));
+    fetch(`/api/buy`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        _id: user._id,
+        symbol: searchSymbol,
+        shares: addShares,
+        total: addShares * searchPrice,
+        currValue: searchPrice
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => dispatch(updateData(data)))
+      .catch((err) => console.log('ERROR while buying shares: ', err));
+    // const sampleUserData = {
+    //   _id: null,
+    //   username: null,
+    //   cash: 90000,
+    //   stocks: [
+    //     { stock: 'AACG', shares: 1, currValue: 200 },
+    //     { stock: 'ACRZ', shares: 5, currValue: 200 },
+    //     { stock: 'ACRX', shares: 6, currValue: 500 },
+    //   ],
+    // };
+    // dispatch(updateData(sampleUserData));
   };
 
   const handleSellClick = (e) => {

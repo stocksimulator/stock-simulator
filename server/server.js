@@ -56,6 +56,7 @@ app.get('/app/*', (req, res) => {
 /* --------------------------- Stock Info HTTP Requests -------------------------- */
 // get request for getting stock info from API
 app.get('/api/:symbol', apiController.getStockValue, (req, res) => {
+  console.log(JSON.stringify(res.locals.stockInfo))
   res.status(200).json(res.locals.stockInfo);
 });
 

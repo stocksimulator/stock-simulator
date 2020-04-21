@@ -7,7 +7,7 @@ const userController = {
     // check with Tristen for password bcrypt
     createNewUser(req, res, next) {
         User.create(
-            { username: req.body.username, password: req.body.password, cash: 100000, stockList: [] },
+            { username: req.body.username, password: req.body.password, cash: 100000, stocks: [] },
             (err, user) => {
                 if (err) return next(err)
                 res.locals.user = user;
@@ -40,7 +40,7 @@ const userController = {
             res.locals.user = {
                 username: user.username,
                 _id: user._id,
-                stockList: user.stockList,
+                stocks: user.stocks,
                 cash: user.cash,
             };
             console.log('this is res.locals.user>>>', res.locals.user)

@@ -31,7 +31,7 @@ const apiController = {
         console.log('established connection')
        // const user = await User.findById(req.body._id)
        // const {stockList, cash} = user;
-        User.findOneAndUpdate({_id: req.body._id}, {"$set": {stockList: [...stockList, [req.body.symbol, req.body.shares]], cash: cash - req.body.total}}, {new: true}, (err, user) => {
+        User.findOneAndUpdate({_id: req.body._id}, {"$set": {stocks: [{stock: req.body.symbol, shares: req.body.shares, currValue: req.body.currValue}], cash: 100000 - req.body.total}}, {new: true}, (err, user) => {
             if (err) return next(err)
             if (!user) return next("User not found")
             res.locals.user = user;
