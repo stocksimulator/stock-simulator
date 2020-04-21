@@ -33,12 +33,13 @@ app.get('/', (req, res) => {
 
 /* --------------------------- User HTTP Requests -------------------------- */
 // post request from client to signup and create new user for app - edited on April 19th 
-app.post('/user/login', userController.userLogin, (req, res) => {
+app.post('/user/login', userController.userLogin, cookieController.setSSIDCookie, sessionController.startSession, (req, res) => {
   // Check with Tristen for Authentication 
+  res.status(200).json({_id: res.locals.user._id});
 });
 
 // post request from client to login to account 
-app.post('/user/signup', userController.createNewUser, (req,res) => {
+app.post('/user/signup', userController.createNewUser, cookieController.setSSIDCookie, sessionController.startSession, (req,res) => {
   res.status(200).json({_id: res.locals.user._id});
 });
 
