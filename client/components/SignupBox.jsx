@@ -27,23 +27,23 @@ const Signup = () => {
     e.preventDefault();
 
     if (user.password === user.confirmPassword) {
-      // fetch('/user/signup/', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(user),
-      // })
-      //   .then((resp) => {
-      //     if (resp.status > 400) {
-      //       throw new Error('Unsuccessful signup');
-      //     }
-      //     return resp.json();
-      //   })
-      //   .then((user) => {
-      //     return dispatch(setUserAuth(user));
-      //   })
-      //   .catch((err) => console.log('Signup Component: fetch POST /user/signup/ ERROR: ', err));
-      const userdata = {_id: '3123123412412', username: 'signup'}
-      return dispatch(setUserAuth(userdata));
+      fetch('/user/signup/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user),
+      })
+        .then((resp) => {
+          if (resp.status > 400) {
+            throw new Error('Unsuccessful signup');
+          }
+          return resp.json();
+        })
+        .then((user) => {
+          return dispatch(setUserAuth(user));
+        })
+        .catch((err) => console.log('Signup Component: fetch POST /user/signup/ ERROR: ', err));
+      // const userdata = {_id: '3123123412412', username: 'signup'}
+      // return dispatch(setUserAuth(userdata));
     } else {
       setPasswordMatch(false);
       setTimeout(() => setPasswordMatch(true), 2000);

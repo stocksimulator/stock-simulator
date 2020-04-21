@@ -7,7 +7,7 @@ const userController = {
     // check with Tristen for password bcrypt
     createNewUser(req, res, next) {
         User.create(
-            { username: req.body.username, password: req.body.password, cash: 50000, stockList: [] },
+            { username: req.body.username, password: req.body.password, cash: 100000, stockList: [] },
             (err, user) => {
                 if (err) return next(err)
                 res.locals.user = user;
@@ -21,9 +21,9 @@ const userController = {
         // have to check with Tristen for authentication 
         const username = req.body.username;
         const password = req.body.password;
-        User.find(req.body, (err, login) => {
-            res.locals.userInfo = login
-            if (err || login.length === 0) {
+        User.findOne({username: username}, (err, user) => {
+            res.locals.user = user
+            if (err || user.length === 0) {
                 res.sendStatus(401);
             }
             else {
