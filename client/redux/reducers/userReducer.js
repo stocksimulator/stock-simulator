@@ -1,16 +1,25 @@
-import types from '../action-types'
+import types from '../action-types';
 
 const initialState = {
   _id: null,
   username: null,
   cash: 100000,
-  stocks: [{ stock: 'AACG', shares: 1, currValue: 100 }, { stock: 'ACRX', shares: 4, currValue: 200 }],
+  stocks: [
+    { stock: 'AACG', shares: 1, currValue: 100 },
+    { stock: 'ACRX', shares: 4, currValue: 200 },
+  ],
 };
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.SET_USER: {
-      return 0; // placeholder
+    case types.SET_USER_AUTH: {
+      const _id = action.payload._id;
+      const username = action.payload.username;
+      return {
+        ...state,
+        _id,
+        username,
+      };
     }
 
     case types.UPDATE_DATA: {
@@ -19,8 +28,8 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         cash,
-        stocks
-      }
+        stocks,
+      };
     }
     default: {
       return state;

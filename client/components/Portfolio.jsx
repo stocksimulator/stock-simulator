@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import StockDisplay from './StockDisplay';
 import '../styles/Portfolio.scss';
 

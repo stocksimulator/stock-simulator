@@ -1,20 +1,29 @@
-import React from 'react';
-import Header from './components/Header';
+import React, { useEffect } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import Header from './components/Header';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
 import './styles/App.scss';
 
-const App = () => (
-  <div>
-    <Header />
-    <Switch>
-      <Route exact path='/' component={LandingPage}></Route>
-      <Route exact path='/app/login' component={LoginPage}></Route>
-      <Route exact path='/app/dashboard' component={DashboardPage}></Route>
-    </Switch>
-  </div>
-);
+const App = () => {
+  const userID = useSelector(state => state.user._id)
+
+  useEffect(() => {
+    console.log('userID:', userID)
+  })
+
+  return (
+    <div>
+      <Header />
+      <Switch>
+        <Route exact path='/' render={() => userID ? (<Redirect to='/app/dashboard'/>) : (<LandingPage/>)}></Route>
+        <Route path='/app/login' render={() => userID ? (<Redirect to='/app/dashboard'/>) : (<LoginPage/>)}></Route>
+        <Route path='/app/dashboard' render={() => userID ? (<DashboardPage/>) : (<LoginPage/>)}></Route>
+      </Switch>
+    </div>
+  );
+};
 
 export default App;
