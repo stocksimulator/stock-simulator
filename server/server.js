@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const userController =  require('./controllers/userController.js') // importing middleware for user login, data and creation - added on April 19th
 const apiController = require('./controllers/apiController.js') // importing middleware for stock info APIs
 
-require('dotenv').config()
+// require('dotenv').config()
 const PORT = 3000;
 
 /* --------------------------- MongoDB Connection -------------------------- */
@@ -61,7 +61,7 @@ app.get('/api/:symbol', apiController.getStockValue, (req, res) => {
 
 // post request for getting stock info from API - Added on April 19th
 app.post('/api/buy', apiController.buyStock, (req, res) => {
-  res.status(200).json(res.locals.stockInfo);
+  res.status(200).json(res.locals.user);
 });
 
 // post request to sell shares of stock, check stock value from API
