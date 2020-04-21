@@ -12,6 +12,7 @@ module.exports = {
     publicPath: '/build/',
     proxy: {
       '/user': 'http://localhost:3000',
+      '/api': 'http://localhost:3000',
     },
     open: false,
     historyApiFallback: true,

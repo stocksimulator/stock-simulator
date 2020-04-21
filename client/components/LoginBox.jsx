@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserAuth } from '../redux/actions/actions';
 import FormInput from './FormInput';
 import '../styles/Login.scss';
 import Button from './Button';
 
 const LoginBox = () => {
+  const dispatch = useDispatch()
+  const [loginError, setLoginError] = useState(false)
   const [user, setUser] = useState({
     username: null,
     password: null,
@@ -17,11 +21,34 @@ const LoginBox = () => {
     })
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetch('/user/login/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user),
+    })
+      .then((resp) => {
+        if (resp.status > 400) {
+          setLoginError(true);
+          setTimeout(() => setLoginError(false), 2000);
+          throw new Error('Unauthorized Access');
+        }
+        return resp.json();
+      })
+      .then((userdata) => {
+        return dispatch(setUserAuth(userdata));
+      })
+      .catch((err) => console.log('Login Component: fetch POST /user/login/ ERROR: ', err));
+    // const userdata = {_id: '3123123412412', username: 'charlie'}
+    // return dispatch(setUserAuth(userdata));
+  };
+
   return (
     <div className='login-container'>
       <p>Already have an account?</p>
       <span>Sign in below</span>
-      <form>
+      <form onSubmit={handleSubmit}>
         <FormInput
           handleChange={handleChange}
           name='username'

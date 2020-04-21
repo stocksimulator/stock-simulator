@@ -1,3 +1,4 @@
 export default {
-  SET_USER: 'SET_USER'
+  SET_USER_AUTH: 'SET_USER_AUTH',
+  UPDATE_DATA: 'UPDATE_DATA'
 }

@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const userController =  require('./controllers/userController.js') // importing middleware for user login, data and creation - added on April 19th
 const apiController = require('./controllers/apiController.js') // importing middleware for stock info APIs
 
-require('dotenv').config()
+// require('dotenv').config()
 const PORT = 3000;
 
 /* --------------------------- MongoDB Connection -------------------------- */
@@ -35,6 +35,7 @@ app.get('/', (req, res) => {
 // post request from client to signup and create new user for app - edited on April 19th 
 app.post('/user/login', userController.userLogin, (req, res) => {
   // Check with Tristen for Authentication 
+  res.status(200).json({_id: res.locals.user._id});
 });
 
 // post request from client to login to account 
@@ -55,12 +56,13 @@ app.get('/app/*', (req, res) => {
 /* --------------------------- Stock Info HTTP Requests -------------------------- */
 // get request for getting stock info from API
 app.get('/api/:symbol', apiController.getStockValue, (req, res) => {
+  console.log(JSON.stringify(res.locals.stockInfo))
   res.status(200).json(res.locals.stockInfo);
 });
 
 // post request for getting stock info from API - Added on April 19th
 app.post('/api/buy', apiController.buyStock, (req, res) => {
-  res.status(200).json(res.locals.stockInfo);
+  res.status(200).json(res.locals.user);
 });
 
 // post request to sell shares of stock, check stock value from API

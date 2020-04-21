@@ -7,7 +7,7 @@ const userController = {
     // check with Tristen for password bcrypt
     createNewUser(req, res, next) {
         User.create(
-            { username: req.body.username, password: req.body.password, cash: 50000, stockList: [] },
+            { username: req.body.username, password: req.body.password, cash: 100000, stocks: [] },
             (err, user) => {
                 if (err) return next(err)
                 res.locals.user = user;
@@ -19,6 +19,17 @@ const userController = {
      // redirected from POST '/user/login' end point
     userLogin(req, res, next) {
         // have to check with Tristen for authentication 
+        const username = req.body.username;
+        const password = req.body.password;
+        User.findOne({username: username}, (err, user) => {
+            res.locals.user = user
+            if (err || user.length === 0) {
+                res.sendStatus(401);
+            }
+            else {
+                return next();
+            }
+        })   
     },
 
      // redirected from POST '/user/getdata' end point
@@ -29,13 +40,13 @@ const userController = {
             res.locals.user = {
                 username: user.username,
                 _id: user._id,
-                stockList: user.stockList,
+                stocks: user.stocks,
                 cash: user.cash,
             };
             console.log('this is res.locals.user>>>', res.locals.user)
             next();
         });
-    }
+    },
 }
 
 module.exports = userController;

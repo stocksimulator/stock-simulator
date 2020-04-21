@@ -1,0 +1,14 @@
+@import './constants/colors';
+@import './constants/fonts';
+
+.dashboard-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 800px;
+  // min-height: 500px;
+  box-shadow: 1px 1px 3px grey;
+  padding: 1rem;
+  background-color: $lightGrey;
+}

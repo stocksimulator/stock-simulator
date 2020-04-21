@@ -1,0 +1,10 @@
+@import './constants/colors';
+@import './constants/fonts';
+
+.value-display {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}

@@ -1,0 +1,20 @@
+@import './constants/colors';
+@import './constants/fonts';
+
+.stock-display {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border: 1px solid $darkGrey;
+  background-color: $darkGrey;
+  color: white;
+  margin-top: 1rem;
+
+  .values {
+    display: flex;
+    justify-content: space-evenly;
+    width: 80%;
+  }
+}
