@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { updateData } from '../redux/actions/actions';
 import SearchBox from '../components/SearchBox';
 import ValueDisplay from './ValueDisplay';
 import AddStock from './AddStock';
 import Portfolio from './Portfolio';
 import '../styles/DashboardContainer.scss';
-import { updateData } from '../redux/actions/actions';
 
 const DashboardContainer = () => {
   const user = useSelector((state) => state.user);
