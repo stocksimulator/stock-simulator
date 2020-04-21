@@ -1,0 +1,36 @@
+@import './constants/colors';
+@import './constants/fonts';
+
+.add-stock {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border: 1px solid $darkGrey;
+  background-color: $darkGrey;
+  color: white;
+  margin-top: 1rem;
+
+  .values {
+    display: flex;
+    justify-content: space-evenly;
+    width: 80%;
+
+    label {
+      margin-right: 0;
+    }
+
+    input {
+      background-color: $darkGrey;
+      border: none;
+      font-size: 1rem;
+      padding: 0.1rem;
+      width: 60px;
+      border-bottom: 1px solid $primaryBlue;
+      margin-left: 0;
+      text-align: center;
+      color: white;
+    }
+  }
+}
