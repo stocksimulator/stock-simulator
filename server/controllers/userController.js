@@ -19,6 +19,17 @@ const userController = {
      // redirected from POST '/user/login' end point
     userLogin(req, res, next) {
         // have to check with Tristen for authentication 
+        const username = req.body.username;
+        const password = req.body.password;
+        User.find(req.body, (err, login) => {
+            res.locals.userInfo = login
+            if (err || login.length === 0) {
+                res.sendStatus(401);
+            }
+            else {
+                return next();
+            }
+        })   
     },
 
      // redirected from POST '/user/getdata' end point
@@ -35,7 +46,7 @@ const userController = {
             console.log('this is res.locals.user>>>', res.locals.user)
             next();
         });
-    }
+    },
 }
 
 module.exports = userController;
