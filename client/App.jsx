@@ -10,6 +10,7 @@ import './styles/App.scss';
 const App = () => {
   const userID = useSelector(state => state.user._id)
 
+  //not sure if we need this?
   useEffect(() => {
     console.log('userID:', userID)
   })
