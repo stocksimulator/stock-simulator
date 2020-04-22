@@ -1,0 +1,22 @@
+const express = require('express');
+const router = express.Router();
+const apiController = require('../controllers/apiController.js') // importing middleware for stock info APIs
+
+/* --------------------------- Stock Info HTTP Requests -------------------------- */
+// get request for getting stock info from API
+router.get('/api/:symbol', apiController.getStockValue, (req, res) => {
+  console.log(JSON.stringify(res.locals.stockInfo))
+  res.status(200).json(res.locals.stockInfo);
+});
+
+// post request for getting stock info from API
+router.post('/api/buy', apiController.buyStock, (req, res) => {
+  res.status(200).json(res.locals.user);
+});
+
+// post request to sell shares of stock, check stock value from API
+router.post('/api/sell', apiController.sellStock, (req, res) => {
+  res.status(200).json(res.locals.stockInfo);
+});
+
+module.exports = router;
