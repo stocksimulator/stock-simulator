@@ -9,12 +9,19 @@ router.post('/login', userController.userLogin, (req, res) => {
     username: res.locals.user.username,
     cash: res.locals.user.cash,
     stocks: res.locals.user.stocks,
+    success: true,
   });
 });
 
 // post request from client to login to account 
 router.post('/signup', userController.createNewUser, (req,res) => {
-  res.status(200).json({_id: res.locals.user._id});
+  res.status(200).json({
+    _id: res.locals.user._id,
+    username: res.locals.user.username,
+    cash: res.locals.user.cash,
+    stocks: res.locals.user.stocks,
+    success: true,
+  });
 });
 
 // get request from client to access stored user data

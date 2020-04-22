@@ -9,9 +9,9 @@ const userController = {
     User.create(
       { username: req.body.username, password: req.body.password, cash: 100000, stocks: [] },
       (err, user) => {
-      if (err) return next(err)
+      if (err) return res.json({success: false})
       res.locals.user = user;
-      next();
+      return next();
     });
   },
 
@@ -21,11 +21,12 @@ const userController = {
 
     User.findOne({username: username})
       .then(user => {
+        if(!user) res.json({success: false})
         res.locals.user = user
         bcrypt.compare(password, res.locals.user.password)
           .then(passwordMatch=> {
             if(passwordMatch) return next()
-            else res.sendStatus(401)
+            else res.json({success: false})
           })
       })
       .catch(err => {
