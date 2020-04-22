@@ -1,15 +1,13 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const app = express();
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-
 const userController =  require('./controllers/userController.js') // importing middleware for user login, data and creation - added on April 19th
 const apiController = require('./controllers/apiController.js') // importing middleware for stock info APIs
+app.use(express.json());
 
-// require('dotenv').config()
 const PORT = 3000;
-
 /* --------------------------- MongoDB Connection -------------------------- */
 // setting up connection to our MongoDB - added on April 19th
 mongoose.connect(
@@ -24,8 +22,7 @@ mongoose.connection
 /* --------------------------- Serve Static Assets -------------------------- */
 // serve static files
 app.use('/build', express.static(path.join(__dirname, '../build')));
-// set up json body parser for incoming client requests 
-app.use(bodyParser.json());
+
 // serve entry point to app (index.html)
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../index.html'));
