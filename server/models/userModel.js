@@ -1,8 +1,7 @@
-const mongoose = require('mongoose') // importing the mongo module for database use
+const mongoose = require('mongoose') 
 
-// create schema for new app users to store in database
 const userSchema = new mongoose.Schema({
-    username: {type: String, required: true, unique: true}, // added unique on April 20th
+    username: {type: String, required: true, unique: true}, 
     password: {type: String, required: true},
     cash: {type: Number},
     stocks: {type: Array}, 

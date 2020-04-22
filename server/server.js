@@ -14,7 +14,8 @@ mongoose.connect(
   process.env.DB,{ 
     useNewUrlParser: true,
     useUnifiedTopology: true, 
-    useCreateIndex: true
+    useCreateIndex: true,
+    useFindAndModify: false,
   },
 );
 
@@ -25,16 +26,17 @@ mongoose.connection
 app.use('/api', apiRouter)
 app.use('/user', userRouter)
 
+//handling client side routing
+app.get('/app/*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../index.html'));
+});
+
 //serve static files
 app.use('/build', express.static(path.join(__dirname, '../build')));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../index.html'));
 });
 
-//handling client side routing
-app.get('/app/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../index.html'));
-});
 
 //global error handler 
 app.use((err, req, res, next) => {
