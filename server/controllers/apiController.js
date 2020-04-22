@@ -1,7 +1,7 @@
-const fetch = require('node-fetch'); // npm i node-fetch on April 20th to help make API requests from backend // protect API key - Added on April 20th 
+const fetch = require('node-fetch');
 const User = require('../models/userModel.js');
 
-// Middleware for Stock GET and POST requests - Added on April 19th 
+// Middleware for Stock GET and POST requests
 const apiController = {
 
   // get stock value from alphavantage api
@@ -9,8 +9,6 @@ const apiController = {
     fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${req.params.symbol}&interval=5min&apikey=${process.env.API_KEY}`)
     .then(res => res.json())
     .then(data => {
-      console.log(data)
-
       res.locals.stockInfo = {symbol: req.params.symbol, price: Math.floor(data['Time Series (5min)']['2020-04-21 16:00:00']['4. close'])}
       return next()
     })
