@@ -4,8 +4,6 @@ const userController =  require('../controllers/userController.js') // importing
 
 // post request from client to signup and create new user for app
 router.post('/login', userController.userLogin, (req, res) => {
-  // Check with Tristen for Authentication
-  console.log('res.locals.user in userController',res.locals.user)
   res.status(200).json({
     _id: res.locals.user._id,
     username: res.locals.user.username,

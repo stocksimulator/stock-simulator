@@ -1,10 +1,10 @@
 const User = require('../models/userModel.js');
+const bcrypt = require('bcrypt');
 
-// middleware for user sign up, data, and login POST requests - added april 19th  
+// middleware for user sign up, data, and login POST requests
 const userController = {
     
-  // redirected from POST '/user/signup' end point
-  // check with Tristen for password bcrypt
+  // middleware for POST '/user/signup'
   createNewUser(req, res, next) {
     User.create(
       { username: req.body.username, password: req.body.password, cash: 100000, stocks: [] },
@@ -15,23 +15,28 @@ const userController = {
     });
   },
 
-  // redirected from POST '/user/login' end point
+  // middleware for POST '/user/login'
   userLogin(req, res, next) {
-    // have to check with Tristen for authentication 
-    const username = req.body.username;
-    const password = req.body.password;
-    User.findOne({username: username}, (err, user) => {
-      res.locals.user = user
-      if (err || user.length === 0) {
-        res.sendStatus(401);
-      }
-      else {
-        return next();
-      }
-    })   
+    const { username, password } = req.body
+
+    User.findOne({username: username})
+      .then(user => {
+        res.locals.user = user
+        bcrypt.compare(password, res.locals.user.password)
+          .then(passwordMatch=> {
+            if(passwordMatch) return next()
+            else res.sendStatus(401)
+          })
+      })
+      .catch(err => {
+        next({
+          log: `userController.userLogin: login find user error: ${err}`,
+          message: { err: `userController.userLogin: login find user error: ${err}`}
+        });
+      })
   },
 
-  // redirected from POST '/user/getdata' end point
+  // middleware for POST '/user/getdata'
   getUserData(req, res, next) {
     User.findOne({_id: req.body._id}, (err, user) => {
       if (err) return next(err)
@@ -42,8 +47,7 @@ const userController = {
         stocks: user.stocks,
         cash: user.cash,
       };
-      console.log('this is res.locals.user>>>', res.locals.user)
-      next();
+      return next();
     });
   },
 }
