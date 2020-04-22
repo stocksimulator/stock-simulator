@@ -28,20 +28,19 @@ const LoginBox = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user),
     })
-      .then((resp) => {
-        if (resp.status > 400) {
-          setLoginError(true);
-          setTimeout(() => setLoginError(false), 2000);
-          throw new Error('Unauthorized Access');
-        }
-        return resp.json();
-      })
-      .then((userdata) => {
-        return dispatch(setUserAuth(userdata));
-      })
-      .catch((err) => console.log('Login Component: fetch POST /user/login/ ERROR: ', err));
-    // const userdata = {_id: '3123123412412', username: 'charlie'}
-    // return dispatch(setUserAuth(userdata));
+    .then((resp) => {
+      if (resp.status > 400) {
+        setLoginError(true);
+        setTimeout(() => setLoginError(false), 2000);
+        throw new Error('Unauthorized Access');
+      }
+      return resp.json();
+    })
+    .then((userdata) => {
+      console.log('userdata', userdata)
+      return dispatch(setUserAuth(userdata));
+    })
+    .catch((err) => console.log('Login Component: fetch POST /user/login/ ERROR: ', err));
   };
 
   return (
