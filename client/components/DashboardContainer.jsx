@@ -23,22 +23,21 @@ const DashboardContainer = () => {
   };
 
   useEffect(() => {
-    setPortfolioValue(calcPortfolio(user.stocks));
-
     // Fetch user data on initial page load
     if (!fetched) {
-      // fetch(`/user/getdata`, {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ _id: user._id }),
-      // })
-      //   .then((res) => res.json())
-      //   .then((data) => {
-      //     dispatch(updateData(data));
-      //     setFetched(true);
-      //   })
-      //   .catch((err) => console.log('ERROR while getting user data: ', err));
+      fetch(`/user/getdata`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ _id: user._id }),
+      })
+      .then((res) => res.json())
+      .then((data) => {
+        dispatch(updateData(data));
+        setFetched(true);
+      })
+      .catch((err) => console.log('ERROR while getting user data: ', err));
     }
+    setPortfolioValue(calcPortfolio(user.stocks));
   });
 
   const handleSearchChange = (e) => {
@@ -59,6 +58,7 @@ const DashboardContainer = () => {
   };
 
   const handleBuyClick = () => {
+    console.log('user???????', user)
     fetch(`/api/buy`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -70,52 +70,33 @@ const DashboardContainer = () => {
         currValue: searchPrice
       }),
     })
-      .then((res) => res.json())
-      .then((data) => dispatch(updateData(data)))
-      .catch((err) => console.log('ERROR while buying shares: ', err));
-    // const sampleUserData = {
-    //   _id: null,
-    //   username: null,
-    //   cash: 90000,
-    //   stocks: [
-    //     { stock: 'AACG', shares: 1, currValue: 200 },
-    //     { stock: 'ACRZ', shares: 5, currValue: 200 },
-    //     { stock: 'ACRX', shares: 6, currValue: 500 },
-    //   ],
-    // };
-    // dispatch(updateData(sampleUserData));
+    .then((res) => res.json())
+    .then((data) => {
+      console.log('data',data)
+      dispatch(updateData(data))
+    })
+    .catch((err) => console.log('ERROR while buying shares: ', err));
   };
 
   const handleSellClick = (e) => {
-    // const id = e.target.id;
-    // const stock = user.stocks[id].stock;
-    // const currValue = user.stocks[id].currValue;
-    // const shares = user.stocks[id].shares;
-    // const total = currValue * shares;
-    // fetch(`/api/sell`, {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({
-    //     _id: user._id,
-    //     symbol: stock,
-    //     shares: shares,
-    //     total: total,
-    //   }),
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => dispatch(updateData(data)))
-    //   .catch((err) => console.log('ERROR while buying shares: ', err));
-    const sampleUserData = {
-      _id: null,
-      username: null,
-      cash: 90000,
-      stocks: [
-        { stock: 'AACG', shares: 1, currValue: 200 },
-        { stock: 'ACRZ', shares: 5, currValue: 200 },
-        { stock: 'ACRX', shares: 6, currValue: 500 },
-      ],
-    };
-    dispatch(updateData(sampleUserData));
+    const id = e.target.id;
+    const stock = user.stocks[id].stock;
+    const currValue = user.stocks[id].currValue;
+    const shares = user.stocks[id].shares;
+    const total = currValue * shares;
+    fetch(`/api/sell`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        _id: user._id,
+        symbol: stock,
+        shares: shares,
+        total: total,
+      }),
+    })
+    .then((res) => res.json())
+    .then((data) => dispatch(updateData(data)))
+    .catch((err) => console.log('ERROR while buying shares: ', err));
   };
 
   return (

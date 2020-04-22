@@ -4,10 +4,7 @@ const initialState = {
   _id: null,
   username: null,
   cash: 100000,
-  stocks: [
-    { stock: 'AACG', shares: 1, currValue: 100 },
-    { stock: 'ACRX', shares: 4, currValue: 200 },
-  ],
+  stocks: [],
 };
 
 const userReducer = (state = initialState, action) => {
@@ -15,10 +12,14 @@ const userReducer = (state = initialState, action) => {
     case types.SET_USER_AUTH: {
       const _id = action.payload._id;
       const username = action.payload.username;
+      const cash = action.payload.cash;
+      const stocks = action.payload.stocks;
       return {
         ...state,
         _id,
         username,
+        cash,
+        stocks
       };
     }
 
