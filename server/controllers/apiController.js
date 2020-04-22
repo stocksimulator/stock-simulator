@@ -1,8 +1,9 @@
 const fetch = require('node-fetch');
 const User = require('../models/userModel.js');
 
-
+// Middleware for Stock GET and POST requests
 const apiController = {
+
   // get stock value from alphavantage api
   getStockValue(req, res, next) {
     fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${req.params.symbol}&interval=5min&apikey=${process.env.API_KEY}`)
@@ -31,14 +32,27 @@ const apiController = {
         if (err) return next(err)
         if (!user) return next("User not found")
         res.locals.user = user;
+        console.log('after mongo', res.locals.user)
         return next();
     })
   },
 
   // redirected from POST '/api/sell' endpoint
   sellStock(req, res, next) {
-
-  }
+    console.log('sellStock req body',req.body)
+    User.findOneAndUpdate({_id: req.body._id}, 
+      {
+        "$pull": {stocks: {stock: req.body.symbol, shares: req.body.shares}},
+        "$inc": {cash: req.body.total}
+      },
+      {new: true}, 
+      (err, user) => {
+        if (err) return next(err)
+        if (!user) return next("User not found")
+        res.locals.user = user;
+        return next();
+    })
+  },
 }
 
 module.exports = apiController;
