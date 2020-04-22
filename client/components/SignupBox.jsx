@@ -10,9 +10,10 @@ const Signup = () => {
 
   const [passwordMatch, setPasswordMatch] = useState(true)
   const [user, setUser] = useState({
-    username: null,
-    password: null,
-    confirmPassword: null,
+    username: '',
+    password: '',
+    confirmPassword: '',
+    signupFailed: false,
   });
 
   const handleChange = (e) => {
@@ -23,30 +24,35 @@ const Signup = () => {
     })
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const resetForm = () => {
+    setUser({
+      username: '',
+      password: '',
+      confirmPassword: '',
+      signupFailed: true,
+    })
+  }
 
+  const handleSubmit = (e) => {
+    if(!user.username || !user.password) return
+    
     if (user.password === user.confirmPassword) {
       fetch('/user/signup/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(user),
       })
-        .then((resp) => {
-          if (resp.status > 400) {
-            throw new Error('Unsuccessful signup');
-          }
-          return resp.json();
-        })
+        .then((resp) => resp.json())
         .then((user) => {
-          return dispatch(setUserAuth(user));
+          if(user && user.success) return dispatch(setUserAuth(user));
+          else resetForm()
         })
-        .catch((err) => console.log('Signup Component: fetch POST /user/signup/ ERROR: ', err));
-      // const userdata = {_id: '3123123412412', username: 'signup'}
-      // return dispatch(setUserAuth(userdata));
+        .catch((err) => {
+          resetForm()
+          console.log('Signup Component: fetch POST /user/signup/ ERROR: ', err);
+        }) 
     } else {
-      setPasswordMatch(false);
-      setTimeout(() => setPasswordMatch(true), 2000);
+      resetForm()
     }
     
   };
@@ -55,13 +61,14 @@ const Signup = () => {
     <div className='signup-container'>
       <p>Don't have an account?</p>
       <span>Sign up for a free account below</span>
-      <form onSubmit={handleSubmit}>
+      <div>
         <FormInput
           handleChange={handleChange}
           name='username'
           type='text'
           placeholder='Username'
           label='Username'
+          value={user.username}
         />
         <FormInput
           handleChange={handleChange}
@@ -69,6 +76,7 @@ const Signup = () => {
           type='password'
           placeholder='Password'
           label='Password'
+          value={user.password}
         />
         <FormInput
           handleChange={handleChange}
@@ -76,11 +84,13 @@ const Signup = () => {
           type='password'
           placeholder='Confirm Password'
           label='Confirm Password'
+          value={user.confirmPassword}
         />
-        <Button type='submit' mt1 primary>
+        <Button onClick={handleSubmit} type='submit' mt1 primary>
           Sign Up
         </Button>
-      </form>
+        {user.signupFailed ? <p className='try-again'>Try Again!</p> : ''}
+      </div>
     </div>
   );
 };
