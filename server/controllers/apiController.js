@@ -1,5 +1,4 @@
-const fetch = require('node-fetch'); // npm i node-fetch on April 20th to help make API requests from backend
-const dotenv = require('dotenv').config() // protect API key - Added on April 20th 
+const fetch = require('node-fetch'); // npm i node-fetch on April 20th to help make API requests from backend // protect API key - Added on April 20th 
 STOCK_KEY = process.env.API_KEY; // variable for using API key for API requests - Added on April 20th
 const User = require('../models/userModel.js');
 
@@ -9,11 +8,11 @@ const apiController = {
     // redirected from GET '/api/:symbol' endpoint
     // edited getStockValue on April 20th 
     getStockValue(req, res, next) {
-        console.log('API key >>>', STOCK_KEY)
-        console.log(req.params.symbol)
+        console.log(req.params)
         fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${req.params.symbol}&interval=5min&apikey=${STOCK_KEY}`)
         .then(res => res.json())
         .then(data => {
+            console.log('data',data)
             res.locals.stockInfo = {symbol: req.params.symbol, price: Math.floor(data['Time Series (5min)']['2020-04-20 16:00:00']['4. close'])}
             next()
             })
