@@ -16,7 +16,7 @@ router.post('/buy', apiController.buyStock, (req, res) => {
 
 // post request to sell shares of stock, check stock value from API
 router.post('/sell', apiController.sellStock, (req, res) => {
-  res.status(200).json(res.locals.stockInfo);
+  res.status(200).json(res.locals.user);
 });
 
 module.exports = router;
