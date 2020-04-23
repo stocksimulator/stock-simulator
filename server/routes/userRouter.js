@@ -11,7 +11,7 @@ router.post('/login', userController.userLogin, (req, res) => {
     stocks: res.locals.user.stocks,
     success: true,
   });
-ex});
+});
 
 // post request from client to login to account 
 router.post('/signup', userController.createNewUser, (req,res) => {
