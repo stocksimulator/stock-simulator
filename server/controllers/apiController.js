@@ -35,11 +35,11 @@ const apiController = {
         } else {
           const change = time.slice(0, 2);
           time = change + ':00:00';
-          console.log('in here');
+          // console.log('in here');
         }
 
         const dateTime = date + ' ' + time;
-        console.log('dateTime', dateTime);
+        // console.log('dateTime', dateTime);
         // console.log(d);
         res.locals.stockInfo = {
           symbol: req.params.symbol,
