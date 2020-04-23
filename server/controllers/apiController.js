@@ -7,11 +7,10 @@ require('dotenv').config();
 const apiController = {
   // get stock value from alphavantage api
   getStockValue(req, res, next) {
-    fetch(
-      `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${req.params.symbol}&interval=5min&apikey=${process.env.API_KEY}`
-    )
+    fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${req.params.symbol}&interval=5min&apikey=${process.env.API_KEY}`)
       .then((res) => res.json())
       .then((data) => {
+        if(data['Error Message']) res.locals.stockInfo = 'Invalide Search Keyword'
         let stockTime = '1. open';
         const today = new Date();
         let date =
@@ -29,23 +28,18 @@ const apiController = {
           today.getSeconds();
         const hour = time.slice(0, 2);
         if (Number(hour) >= 16) {
-          // console.log('in here');
           time = '16:00:00';
           stockTime = '4. close';
         } else {
           const change = time.slice(0, 2);
           time = change + ':00:00';
-          // console.log('in here');
         }
 
         const dateTime = date + ' ' + time;
-        // console.log('dateTime', dateTime);
-        // console.log(d);
         res.locals.stockInfo = {
           symbol: req.params.symbol,
           price: Math.floor(data['Time Series (5min)'][dateTime][stockTime]),
         };
-        // console.log('symbol:  ', res.locals.stockInfo.price);
         return next();
       })
       .catch((err) => {
@@ -75,7 +69,6 @@ const apiController = {
         if (err) return next(err);
         if (!user) return next('User not found');
         res.locals.user = user;
-        console.log('after mongo', res.locals.user);
         return next();
       }
     );
@@ -83,7 +76,6 @@ const apiController = {
 
   // redirected from POST '/api/sell' endpoint
   sellStock(req, res, next) {
-    console.log('sellStock req body', req.body);
     User.findOneAndUpdate(
       { _id: req.body._id },
       {

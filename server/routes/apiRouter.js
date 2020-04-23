@@ -5,7 +5,6 @@ const apiController = require('../controllers/apiController.js') // importing mi
 /* --------------------------- Stock Info HTTP Requests -------------------------- */
 // get request for getting stock info from API
 router.get('/:symbol', apiController.getStockValue, (req, res) => {
-  console.log(JSON.stringify(res.locals.stockInfo))
   res.status(200).json(res.locals.stockInfo);
 });
 

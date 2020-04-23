@@ -13,11 +13,6 @@ module.exports = {
     proxy: {
       '/user': 'http://localhost:3000',
       '/api': 'http://localhost:3000',
-      // '/api':{
-      //   target: 'ws://localhost:3000'
-      //   ws: true,
-      //   // changeOrigin: true
-      // }
     },
     open: false,
     historyApiFallback: true,
