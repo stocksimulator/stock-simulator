@@ -8,7 +8,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: $darkGrey;
+  background-color: $navBlack2;
   box-sizing: border-box;
 
   .logo {
@@ -25,8 +25,32 @@
   }
 
   span {
-    color: white;
+    color: $navTitle;
     text-decoration: none;
     font-size: 1.5rem;
+  }
+  .secondary {
+    background-color: $navTitle;
+    border: none;
+    color: white;
+    font-family: $headerFont;
+    border-radius: 8px;
+  }
+  .secondary:hover {
+    background-color: $navTitleHover;
+    border: none;
+    color: white;
+  }
+  .primary {
+    background-color: $navTitle;
+    border: none;
+    color: white;
+    font-family: $headerFont;
+    border-radius: 8px;
+  }
+  .primary:hover {
+    background-color: $navTitleHover;
+    border: none;
+    color: white;
   }
 }
