@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-//changes
-// const io = require('socket.io-client');
-// import socketIOClient from "socket.io-client";
-//change ^
 import { updateData } from '../redux/actions/actions';
 import SearchBox from '../components/SearchBox';
 import ValueDisplay from './ValueDisplay';
@@ -20,6 +16,8 @@ const DashboardContainer = () => {
   const [searchPrice, setSearchPrice] = useState('');
   const [addShares, setAddShares] = useState('');
   const [portfolioValue, setPortfolioValue] = useState(0);
+  const [invalidKeyWord, setInvalidKeyWord] = useState(false);
+  const [invalidShares, setinvalidShares] = useState(false);
 
   const calcPortfolio = (stocks) => {
     let total = stocks.reduce((acc, curr) => (acc += curr.currValue * curr.shares), 0);
@@ -28,7 +26,6 @@ const DashboardContainer = () => {
 
   useEffect(() => {
     // Fetch user data on initial page load
-    // const socket = socketIOClient()
     if (!fetched) {
       fetch(`/user/getdata`, {
         method: 'POST',
@@ -48,6 +45,7 @@ const DashboardContainer = () => {
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchSymbol(value);
+    setinvalidShares(false)
   };
 
   const handleAddSharesChange = (e) => {
@@ -58,18 +56,33 @@ const DashboardContainer = () => {
   const handleSearchClick = () => {
     fetch(`/api/${searchSymbol}`)
     .then(res => res.json())
-    .then(data => setSearchPrice(data.price))
+    .then(data => {
+      if(data === 'Invalide Search Keyword') {
+        console.log('here')
+        setInvalidKeyWord(true)
+        return
+      }
+      else {
+        setSearchPrice(data.price)
+        setInvalidKeyWord(false)
+      }
+    })
     .catch(err => console.log('ERROR while getting price: ', err))
   };
 
   const handleBuyClick = () => {
-    console.log('user???????', user)
+    if(isNaN(Number(addShares) * Number(searchPrice))) {
+      setinvalidShares(true) 
+      return
+    }
+    setinvalidShares(false)
+
     fetch(`/api/buy`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         _id: user._id,
-        symbol: searchSymbol,
+        symbol: searchSymbol.toUpperCase(),
         shares: addShares,
         total: addShares * searchPrice,
         currValue: searchPrice
@@ -77,7 +90,6 @@ const DashboardContainer = () => {
     })
     .then((res) => res.json())
     .then((data) => {
-      console.log('data',data)
       dispatch(updateData(data))
     })
     .catch((err) => console.log('ERROR while buying shares: ', err));
@@ -107,7 +119,7 @@ const DashboardContainer = () => {
   return (
     <div className='dashboard-container'>
       <ValueDisplay cash={user.cash} portfolioValue={portfolioValue} />
-      <SearchBox handleSearchChange={handleSearchChange} handleSearchClick={handleSearchClick} />
+      <SearchBox handleSearchChange={handleSearchChange} handleSearchClick={handleSearchClick}/>
       {searchSymbol.length ? (
         <AddStock
           symbol={searchSymbol}
@@ -116,8 +128,11 @@ const DashboardContainer = () => {
           addShares={addShares}
           searchSymbol={searchSymbol}
           handleBuyClick={handleBuyClick}
+          invalidKeyWord={invalidKeyWord}
         />
       ) : null}
+      {invalidKeyWord ? <p className="validation">Please enter a valid ticker symbol </p> : ''}
+      {invalidShares ? <p className="validation">Please enter a valid number in the Shares field</p> : ''}
       <Portfolio stocks={user.stocks} handleSellClick={handleSellClick} />
     </div>
   );
