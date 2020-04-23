@@ -3572,3 +3572,4 @@ array.forEach(stock => {
   result.push(splitStocks[0])
 })
 
+module.exports = result;

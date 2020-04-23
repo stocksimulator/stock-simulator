@@ -6,6 +6,11 @@ const mongoose = require('mongoose');
 const apiRouter = require('./routes/apiRouter.js')
 const userRouter = require('./routes/userRouter.js')
 const PORT = 3000;
+//changes
+// const socket = require('socket.io');
+// const http = require('http');
+
+//up Changes ^
 
 app.use(express.json());
 
@@ -49,10 +54,24 @@ app.use((err, req, res, next) => {
   return res.status(errorObj.status).json(errorObj.message);
 });
 
+//changes
+// const server = http.createServer(app);
+
+// const io = socket(server);
+// const getApiAndEmit = "TODO";
+
+// io.on('connection', () => {
+//   console.log('New Client Connection')
+// });
+// server.listen(PORT, () => {
+//   console.log(`Listening on port ${PORT}`)
+// })
+//changes ^
+
+
+
+// UNDO BELOW
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`)
 })
 
-io.on('connection', () => {
-  console.log('Socket Connection On');
-});
