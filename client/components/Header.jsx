@@ -1,9 +1,22 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserAuth } from '../redux/actions/actions';
 import { Link } from 'react-router-dom';
 import Button from './Button';
 import '../styles/Header.scss';
 
 const Header = ({userID}) => {
+  const dispatch = useDispatch()
+  
+  const handleLogOut = () => {
+    return dispatch(setUserAuth({
+      _id: null,
+      username: null,
+      cash: 100000,
+      stocks: [],
+    }));
+  }
+
  console.log('userID: ', userID)
   if (!userID) {
     return (
@@ -41,7 +54,7 @@ const Header = ({userID}) => {
     </Link>
       <div className='options'>
       <Link to='/app/login'>
-        <Button secondary mr1>
+        <Button secondary mr1 onClick={handleLogOut}>
           Logout
         </Button>
       </Link>
