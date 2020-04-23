@@ -19,6 +19,8 @@ const DashboardContainer = () => {
   const [portfolioValue, setPortfolioValue] = useState(0);
   const [invalidKeyWord, setInvalidKeyWord] = useState(false);
   const [invalidShares, setinvalidShares] = useState(false);
+  const [graph, setGraph] = useState([]);
+  const [searchClick, setSearchClick] = useState(false);
 
   const calcPortfolio = (stocks) => {
     let total = stocks.reduce(
@@ -58,14 +60,15 @@ const DashboardContainer = () => {
   };
 
   const handleSearchClick = () => {
+    setSearchClick(true);
     fetch(`/api/${searchSymbol}`)
       .then((res) => res.json())
       .then((data) => {
         if (data === 'Invalide Search Keyword') {
-          console.log('here');
           setInvalidKeyWord(true);
           return;
         } else {
+          setGraph(data.graph);
           setSearchPrice(data.price);
           setInvalidKeyWord(false);
         }
@@ -79,7 +82,7 @@ const DashboardContainer = () => {
       return;
     }
     setinvalidShares(false);
-
+    setSearchSymbol('');
     fetch(`/api/buy`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -125,6 +128,7 @@ const DashboardContainer = () => {
       <SearchBox
         handleSearchChange={handleSearchChange}
         handleSearchClick={handleSearchClick}
+        searchSymbol={searchSymbol}
       />
       {searchSymbol.length ? (
         <AddStock
@@ -149,8 +153,8 @@ const DashboardContainer = () => {
       ) : (
         ''
       )}
+      {searchClick && searchSymbol.length ? <Graph graph={graph} /> : ''}
       <Portfolio stocks={user.stocks} handleSellClick={handleSellClick} />
-      <Graph />
     </div>
   );
 };

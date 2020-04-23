@@ -7,13 +7,16 @@ require('dotenv').config();
 const apiController = {
   // get stock value from alphavantage api
   getStockValue(req, res, next) {
-    fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${req.params.symbol}&interval=5min&apikey=${process.env.API_KEY}`)
+    fetch(
+      `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${req.params.symbol}&interval=5min&apikey=${process.env.API_KEY}`
+    )
       .then((res) => res.json())
       .then((data) => {
         // console.log('data', data)
-        if(data['Error Message']) res.locals.stockInfo = 'Invalide Search Keyword'
-        else {
-          let stockTime = '1. open';
+        if (data['Error Message']) {
+          res.locals.stockInfo = 'Invalide Search Keyword';
+        } else {
+          let stockTime;
           const today = new Date();
           let date =
             today.getFullYear() +
@@ -21,29 +24,42 @@ const apiController = {
             '0' +
             (today.getMonth() + 1) +
             '-' +
-            today.getDate();
+            (today.getDate() -1);
+
           let time =
             today.getHours() +
             ':' +
             today.getMinutes() +
             ':' +
             today.getSeconds();
-          const hour = time.slice(0, 2);
-          if (Number(hour) >= 16) {
+          let hour = Number(time.slice(0, 2)) + 3;
+          if (hour >= 16) {
             time = '16:00:00';
             stockTime = '4. close';
-          } else {
-            const minutes = time.slice(2, 4);
-            let newMinutes = ((Number(minutes) % 5) * 5).toString();
-            time = change +':'+newMinutes + ':00';
+          } 
+          else {
+            // console.log('in here');
+            let minutes = time.slice(3, 5);
+            let newMinutes = Number(minutes) - (Number(minutes) % 5);
+            if(newMinutes < 10){
+              let temp = newMinutes;
+              newMinutes = '0' + temp;
+            }
+            time = hour + ':' + newMinutes + ':00';
+            stockTime = '1. open';
+            // console.log(time);
           }
-  
           const dateTime = date + ' ' + time;
-          console.log(dateTime);
+          // console.log(dateTime);
+          //Hard Coded date day - 1;
+          // console.log(data['Time Series (5min)']);
+          // console.log(data['Time Series (5min)'][dateTime]);
           res.locals.stockInfo = {
             symbol: req.params.symbol,
             price: Math.floor(data['Time Series (5min)'][dateTime][stockTime]),
+            graph: data['Time Series (5min)']
           };
+          // console.log(res.locals.stockInfo);
         }
         return next();
       })
