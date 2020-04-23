@@ -3564,8 +3564,12 @@ const path = require('path')
 
 const array = stocks.split('\n')
 
+//Maybe split stocks 
+
 const result = []
 array.forEach(stock => {
   const splitStocks = stock.split('|')
   result.push(splitStocks[0])
 })
+
+module.exports = result;
