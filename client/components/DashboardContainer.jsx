@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+//changes
+// const io = require('socket.io-client');
+// import socketIOClient from "socket.io-client";
+//change ^
 import { updateData } from '../redux/actions/actions';
 import SearchBox from '../components/SearchBox';
 import ValueDisplay from './ValueDisplay';
@@ -24,6 +28,7 @@ const DashboardContainer = () => {
 
   useEffect(() => {
     // Fetch user data on initial page load
+    // const socket = socketIOClient()
     if (!fetched) {
       fetch(`/user/getdata`, {
         method: 'POST',
