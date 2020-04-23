@@ -71,7 +71,7 @@ const DashboardContainer = () => {
   };
 
   const handleBuyClick = () => {
-    if(typeof isNaN(addShares * searchPrice)) {
+    if(isNaN(Number(addShares) * Number(searchPrice))) {
       setinvalidShares(true) 
       return
     }
