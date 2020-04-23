@@ -57,3 +57,16 @@
 .mb1 {
   margin-bottom: 1rem;
 }
+
+button[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+  cursor:none;
+  &:hover {
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+    cursor: default;
+  }
+}

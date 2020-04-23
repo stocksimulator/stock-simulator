@@ -9,7 +9,9 @@ const apiController = {
     fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${req.params.symbol}&interval=5min&apikey=${process.env.API_KEY}`)
     .then(res => res.json())
     .then(data => {
-      res.locals.stockInfo = {symbol: req.params.symbol, price: Math.floor(data['Time Series (5min)']['2020-04-21 16:00:00']['4. close'])}
+      console.log('stock data',data)
+      if(data['Error Message']) res.locals.stockInfo = 'Invalide Search Keyword'
+      else res.locals.stockInfo = {symbol: req.params.symbol, price: Math.floor(data['Time Series (5min)']['2020-04-21 16:00:00']['4. close'])}
       return next()
     })
     .catch(err => {

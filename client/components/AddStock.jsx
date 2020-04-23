@@ -2,7 +2,7 @@ import React from 'react'
 import '../styles/AddStock.scss'
 import Button from './Button'
 
-const AddStock = ({searchSymbol, price, handleAddSharesChange, addShares, handleBuyClick}) => (
+const AddStock = ({searchSymbol, price, handleAddSharesChange, addShares, handleBuyClick, invalidKeyWord}) => (
   <div className="add-stock">
   <div className="values">
     <p className='name'>NAME: {searchSymbol.toUpperCase()} </p>
@@ -13,7 +13,7 @@ const AddStock = ({searchSymbol, price, handleAddSharesChange, addShares, handle
     </div>
     <p className='total'>TOTAL: ${price * addShares}</p>
   </div>
-    <Button onClick={handleBuyClick} secondary>Buy</Button>
+    <Button onClick={handleBuyClick} secondary disabled={invalidKeyWord}>Buy</Button>
   </div>
 )
 
