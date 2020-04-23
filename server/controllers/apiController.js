@@ -10,36 +10,39 @@ const apiController = {
     fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${req.params.symbol}&interval=5min&apikey=${process.env.API_KEY}`)
       .then((res) => res.json())
       .then((data) => {
+        console.log('data', data)
         if(data['Error Message']) res.locals.stockInfo = 'Invalide Search Keyword'
-        let stockTime = '1. open';
-        const today = new Date();
-        let date =
-          today.getFullYear() +
-          '-' +
-          '0' +
-          (today.getMonth() + 1) +
-          '-' +
-          today.getDate();
-        let time =
-          today.getHours() +
-          ':' +
-          today.getMinutes() +
-          ':' +
-          today.getSeconds();
-        const hour = time.slice(0, 2);
-        if (Number(hour) >= 16) {
-          time = '16:00:00';
-          stockTime = '4. close';
-        } else {
-          const change = time.slice(0, 2);
-          time = change + ':00:00';
+        else {
+          let stockTime = '1. open';
+          const today = new Date();
+          let date =
+            today.getFullYear() +
+            '-' +
+            '0' +
+            (today.getMonth() + 1) +
+            '-' +
+            today.getDate();
+          let time =
+            today.getHours() +
+            ':' +
+            today.getMinutes() +
+            ':' +
+            today.getSeconds();
+          const hour = time.slice(0, 2);
+          if (Number(hour) >= 16) {
+            time = '16:00:00';
+            stockTime = '4. close';
+          } else {
+            const change = time.slice(0, 2);
+            time = change + ':00:00';
+          }
+  
+          const dateTime = date + ' ' + time;
+          res.locals.stockInfo = {
+            symbol: req.params.symbol,
+            price: Math.floor(data['Time Series (5min)'][dateTime][stockTime]),
+          };
         }
-
-        const dateTime = date + ' ' + time;
-        res.locals.stockInfo = {
-          symbol: req.params.symbol,
-          price: Math.floor(data['Time Series (5min)'][dateTime][stockTime]),
-        };
         return next();
       })
       .catch((err) => {
