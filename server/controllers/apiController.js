@@ -33,11 +33,13 @@ const apiController = {
             time = '16:00:00';
             stockTime = '4. close';
           } else {
-            const change = time.slice(0, 2);
-            time = change + ':00:00';
+            const minutes = time.slice(2, 4);
+            let newMinutes = ((Number(minutes) % 5) * 5).toString();
+            time = change +':'+newMinutes + ':00';
           }
   
           const dateTime = date + ' ' + time;
+          console.log(dateTime);
           res.locals.stockInfo = {
             symbol: req.params.symbol,
             price: Math.floor(data['Time Series (5min)'][dateTime][stockTime]),

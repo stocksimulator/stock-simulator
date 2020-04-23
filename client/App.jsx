@@ -12,7 +12,7 @@ const App = () => {
 
   return (
     <div>
-      <Header />
+      <Header userID={userID}/>
       <Switch>
         <Route exact path='/' render={() => userID ? (<Redirect to='/app/dashboard'/>) : (<LandingPage/>)}></Route>
         <Route path='/app/login' render={() => userID ? (<Redirect to='/app/dashboard'/>) : (<LoginPage/>)}></Route>

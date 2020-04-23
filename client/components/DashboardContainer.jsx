@@ -5,6 +5,7 @@ import SearchBox from '../components/SearchBox';
 import ValueDisplay from './ValueDisplay';
 import AddStock from './AddStock';
 import Portfolio from './Portfolio';
+import Graph from './Graph.jsx';
 import '../styles/DashboardContainer.scss';
 
 const DashboardContainer = () => {
@@ -20,7 +21,10 @@ const DashboardContainer = () => {
   const [invalidShares, setinvalidShares] = useState(false);
 
   const calcPortfolio = (stocks) => {
-    let total = stocks.reduce((acc, curr) => (acc += curr.currValue * curr.shares), 0);
+    let total = stocks.reduce(
+      (acc, curr) => (acc += curr.currValue * curr.shares),
+      0
+    );
     return total;
   };
 
@@ -32,12 +36,12 @@ const DashboardContainer = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ _id: user._id }),
       })
-      .then((res) => res.json())
-      .then((data) => {
-        dispatch(updateData(data));
-        setFetched(true);
-      })
-      .catch((err) => console.log('ERROR while getting user data: ', err));
+        .then((res) => res.json())
+        .then((data) => {
+          dispatch(updateData(data));
+          setFetched(true);
+        })
+        .catch((err) => console.log('ERROR while getting user data: ', err));
     }
     setPortfolioValue(calcPortfolio(user.stocks));
   });
@@ -45,7 +49,7 @@ const DashboardContainer = () => {
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchSymbol(value);
-    setinvalidShares(false)
+    setinvalidShares(false);
   };
 
   const handleAddSharesChange = (e) => {
@@ -55,27 +59,26 @@ const DashboardContainer = () => {
 
   const handleSearchClick = () => {
     fetch(`/api/${searchSymbol}`)
-    .then(res => res.json())
-    .then(data => {
-      if(data === 'Invalide Search Keyword') {
-        console.log('here')
-        setInvalidKeyWord(true)
-        return
-      }
-      else {
-        setSearchPrice(data.price)
-        setInvalidKeyWord(false)
-      }
-    })
-    .catch(err => console.log('ERROR while getting price: ', err))
+      .then((res) => res.json())
+      .then((data) => {
+        if (data === 'Invalide Search Keyword') {
+          console.log('here');
+          setInvalidKeyWord(true);
+          return;
+        } else {
+          setSearchPrice(data.price);
+          setInvalidKeyWord(false);
+        }
+      })
+      .catch((err) => console.log('ERROR while getting price: ', err));
   };
 
   const handleBuyClick = () => {
-    if(isNaN(Number(addShares) * Number(searchPrice))) {
-      setinvalidShares(true) 
-      return
+    if (isNaN(Number(addShares) * Number(searchPrice))) {
+      setinvalidShares(true);
+      return;
     }
-    setinvalidShares(false)
+    setinvalidShares(false);
 
     fetch(`/api/buy`, {
       method: 'POST',
@@ -85,14 +88,14 @@ const DashboardContainer = () => {
         symbol: searchSymbol.toUpperCase(),
         shares: addShares,
         total: addShares * searchPrice,
-        currValue: searchPrice
+        currValue: searchPrice,
       }),
     })
-    .then((res) => res.json())
-    .then((data) => {
-      dispatch(updateData(data))
-    })
-    .catch((err) => console.log('ERROR while buying shares: ', err));
+      .then((res) => res.json())
+      .then((data) => {
+        dispatch(updateData(data));
+      })
+      .catch((err) => console.log('ERROR while buying shares: ', err));
   };
 
   const handleSellClick = (e) => {
@@ -111,15 +114,18 @@ const DashboardContainer = () => {
         total: total,
       }),
     })
-    .then((res) => res.json())
-    .then((data) => dispatch(updateData(data)))
-    .catch((err) => console.log('ERROR while buying shares: ', err));
+      .then((res) => res.json())
+      .then((data) => dispatch(updateData(data)))
+      .catch((err) => console.log('ERROR while buying shares: ', err));
   };
 
   return (
-    <div className='dashboard-container'>
+    <div className="dashboard-container">
       <ValueDisplay cash={user.cash} portfolioValue={portfolioValue} />
-      <SearchBox handleSearchChange={handleSearchChange} handleSearchClick={handleSearchClick}/>
+      <SearchBox
+        handleSearchChange={handleSearchChange}
+        handleSearchClick={handleSearchClick}
+      />
       {searchSymbol.length ? (
         <AddStock
           symbol={searchSymbol}
@@ -131,9 +137,20 @@ const DashboardContainer = () => {
           invalidKeyWord={invalidKeyWord}
         />
       ) : null}
-      {invalidKeyWord ? <p className="validation">Please enter a valid ticker symbol </p> : ''}
-      {invalidShares ? <p className="validation">Please enter a valid number in the Shares field</p> : ''}
+      {invalidKeyWord ? (
+        <p className="validation">Please enter a valid ticker symbol </p>
+      ) : (
+        ''
+      )}
+      {invalidShares ? (
+        <p className="validation">
+          Please enter a valid number in the Shares field
+        </p>
+      ) : (
+        ''
+      )}
       <Portfolio stocks={user.stocks} handleSellClick={handleSellClick} />
+      <Graph />
     </div>
   );
 };
