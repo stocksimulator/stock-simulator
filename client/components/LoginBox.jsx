@@ -7,11 +7,19 @@ import Button from './Button';
 
 const LoginBox = () => {
   const dispatch = useDispatch()
-  const [loginError, setLoginError] = useState(false)
   const [user, setUser] = useState({
-    username: null,
-    password: null,
+    username: '',
+    password: '',
+    loginFailed: false,
   });
+  
+  const resetForm = () => {
+    setUser({
+      username: '',
+      password: '',
+      loginFailed: true,
+    })
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,38 +30,37 @@ const LoginBox = () => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    //client side validation
+    if(!user.username || !user.password) return
+
     fetch('/user/login/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user),
     })
-    .then((resp) => {
-      if (resp.status > 400) {
-        setLoginError(true);
-        setTimeout(() => setLoginError(false), 2000);
-        throw new Error('Unauthorized Access');
-      }
-      return resp.json();
-    })
+    .then((resp) => resp.json())
     .then((userdata) => {
-      console.log('userdata', userdata)
-      return dispatch(setUserAuth(userdata));
+      if(userdata && userdata.success) return dispatch(setUserAuth(userdata));
+      else resetForm()
     })
-    .catch((err) => console.log('Login Component: fetch POST /user/login/ ERROR: ', err));
+    .catch((err) => {
+      resetForm()
+      console.log('Login Component: fetch POST /user/login/ ERROR: ', err);
+    })
   };
 
   return (
     <div className='login-container'>
       <p>Already have an account?</p>
       <span>Sign in below</span>
-      <form onSubmit={handleSubmit}>
+      <div>
         <FormInput
           handleChange={handleChange}
           name='username'
           type='text'
           placeholder='Username'
           label='Username'
+          value={user.username}
         />
         <FormInput
           handleChange={handleChange}
@@ -61,11 +68,14 @@ const LoginBox = () => {
           type='password'
           placeholder='Password'
           label='Password'
+          value={user.password}
         />
-        <Button type='submit' mt1 primary>
-          Sign Up
+        <Button onClick={handleSubmit} type='submit' mt1 primary>
+          Log In
         </Button>
-      </form>
+
+        {user.loginFailed ? <p className='try-again'>Try Again!</p> : ''}
+      </div>
     </div>
   );
 };

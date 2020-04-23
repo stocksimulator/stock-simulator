@@ -6,7 +6,6 @@ const StockDisplay = ({ stock, currValue, shares, handleSellClick, id }) => (
   <div className='stock-display'>
     <div className='values'>
       <p className='name'>NAME: {stock} </p>
-      {/* <p className='price'>PRICE: ${currValue.toFixed(2)}</p> */}
       <p className='price'>
         PRICE: ${ currValue==="" ? 0 : Number(currValue).toFixed(2)}
       </p>
@@ -14,7 +13,6 @@ const StockDisplay = ({ stock, currValue, shares, handleSellClick, id }) => (
       <p className='total'>
         TOTAL: ${(currValue * shares).toFixed(2)}
       </p>
-      {/* <p className='total'>TOTAL: ${(currValue * shares).toFixed(2)}</p> */}
     </div>
     <Button id={id} onClick={handleSellClick} secondary>Sell All</Button>
   </div>
