@@ -1,3 +1,3 @@
 # stock-simulator
 
-Stock Simulator Created at In React.
+Stock Simulator Created In React.
